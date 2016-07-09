@@ -1,13 +1,22 @@
 var fs = require('fs');
 var path = require('path');
 
-fs.readdir(process.argv[2], function(error, list){
-    for(var i=0; i<list.length; i++){
-        if(path.extname(list[i]).substring(1) == process.argv[3]){
-            console.log(list[i]);
+module.exports = function(dirname, ext, callback){
+    fs.readdir(dirname, function(error, list){
+        if(error) 
+            return callback(error);
+        var filteredList = [];
+        for(var i=0; i<list.length; i++){
+            if(path.extname(list[i]).substring(1) == ext){
+                filteredList.push(list[i]);
+            }
         }
-    }
-});
+        
+        return callback(null, filteredList);
+    });
+};
+
+
 
 
 
